@@ -14,9 +14,9 @@ const CartSlice = createSlice({
       const newItem = action.payload;
       state.totalQuantity = state.totalQuantity + 1;
 
-      const currentPrice = newItem.prices.find(
-        (price) => price.currency.label === 'USD'
-      );
+      // const currentPrice = newItem.prices.find(
+      //   (price) => price.currency.label === 'USD'
+      // );
 
       // state.totalAmount = state.totalAmount + newItem.amount * currentPrice;
       const exisitingItem = state.items.find((item) => item.id === newItem.id);
