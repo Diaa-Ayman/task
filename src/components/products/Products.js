@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import Product from './Product';
-import testImage from '../../assets/testImage.png';
-import styled from 'styled-components';
 import { gql } from '@apollo/client';
 // import client from '../../api/gql-client';
 import fetchData from '../../api/fetchFun';
 import { withRouter } from 'react-router';
+import { ProductsContainer } from '../styles/category.style';
+import { connect } from 'react-redux';
 
 const GET_PRODUCTS = gql`
   query {
@@ -15,6 +15,13 @@ const GET_PRODUCTS = gql`
         id
         name
         gallery
+        prices {
+          currency {
+            symbol
+            label
+          }
+          amount
+        }
       }
     }
   }
@@ -28,11 +35,8 @@ class Products extends Component {
       loading: false,
     };
   }
+
   async componentDidMount() {
-    // const res = fetchData(GET_PRODUCTS);
-    // res.then((response) => {
-    //   this.setState({ products: response.data.categories[0].products });
-    // });
     try {
       const data = await fetchData(GET_PRODUCTS);
       this.setState({
@@ -48,26 +52,33 @@ class Products extends Component {
     const products = this.state.products.find(
       (product) => product.name === this.props.match.params.categoryName
     );
+
     return (
       <ProductsContainer>
-        {products?.products.map((product) => (
-          <Product
-            image={product.gallery[0] || product.gallery[1]}
-            name={product.name}
-            price={55}
-            id={product.id}
-            key={product.id}
-          />
-        ))}
+        {products?.products.map((product) => {
+          const price = product?.prices.find(
+            (price) => price.currency.label === this.props.curCurrency
+          );
+
+          return (
+            <Product
+              image={product.gallery[0] || product.gallery[1]}
+              name={product.name}
+              price={price}
+              id={product.id}
+              key={product.id}
+            />
+          );
+        })}
       </ProductsContainer>
     );
   }
 }
 
-const ProductsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin: 6rem 0;
-`;
+const mapStateToProps = (state) => {
+  return {
+    curCurrency: state.price.priceCurrency,
+  };
+};
 
-export default withRouter(Products);
+export default withRouter(connect(mapStateToProps)(Products));

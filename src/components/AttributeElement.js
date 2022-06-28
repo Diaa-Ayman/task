@@ -1,34 +1,45 @@
 import { Component } from 'react';
 import styled from 'styled-components';
-import { StyledSpan, Attribute } from './Global';
+import { StyledSpan, Attribute } from './styles/Global';
 export default class AttributeElement extends Component {
+  state = {
+    items: [],
+  };
+
   render() {
-    const {
-      attributes,
-      colors,
-      width,
-      height,
-      hoveredBackgroundColor,
-      hoveredColor,
-      child,
-    } = this.props;
+    const { attribute } = this.props;
+
+    const colorAttr = attribute.name === 'Color';
     return (
       <AttrElement>
-        <StyledSpan fontWeight='900' fontSize='12px'>
-          {child}:
+        <StyledSpan fontWeight='900' fontSize='1rem'>
+          {attribute.name.toUpperCase()}:
         </StyledSpan>
         <AttributesContainer>
-          {attributes.map((attribute, index) => (
+          {attribute.items.map((item) => (
             <Attribute
-              backgroundColor={colors ? attribute : '#fff'}
-              width={width}
-              height={height}
-              hoveredBackgroundColor={hoveredBackgroundColor}
-              hoveredColor={hoveredColor}
-              key={index}
+              onClick={async () => {
+                if (!this.state.items.includes(item)) {
+                  await this.setState({
+                    items: [...this.state.items, item],
+                  });
+                }
+
+                this.props.getAttributes &&
+                  this.props.getAttributes({
+                    ...attribute,
+                    items: this.state.items,
+                  });
+              }}
+              key={item.id}
+              backgroundColor={colorAttr ? item.value : '#fff'}
+              width={colorAttr ? '12px' : '45px'}
+              height={colorAttr ? '12px' : '27px'}
+              hoveredBackgroundColor={!colorAttr && '#0f0f0f'}
+              hoveredColor='#fff'
             >
               {/* Need for test IMP */}
-              {!colors && attribute}
+              {!colorAttr && item.displayValue}
             </Attribute>
           ))}
         </AttributesContainer>

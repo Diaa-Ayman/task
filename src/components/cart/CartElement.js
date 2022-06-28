@@ -1,63 +1,68 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
-import { StyledSpan, Button } from '../Global';
+import { StyledSpan } from '../styles/Global';
 import AttributeElement from '../AttributeElement';
-import testImage from '../../assets/testImage.png';
+import { connect } from 'react-redux';
+import { addToCart, removeFromCart } from '../../store/cart-slice';
+
+import {
+  Image,
+  ActionButton,
+  Element,
+  ElementData,
+  ElementGallery,
+  AttributeContainer,
+  PriceContainer,
+  Amount,
+  Actions,
+} from '../styles/cart.style';
 
 class CartElement extends Component {
+  increaseHandler() {
+    this.props.increase();
+  }
+  decreaseHandler() {
+    this.props.decrease();
+  }
   render() {
-    const attributes = ['L', 'XL', 'SM', 'M', 'XS']; //test
-    const colorsAttributes = ['blue', 'red', 'green', 'pink', ' #080808']; // test
+    // console.log(this.props.product);
+    const { name, id, gallery, prices, amount, attributes } =
+      this.props?.product;
+    const PRICE = prices.find(
+      (price) => price.currency.label === this.props.curCurrency
+    );
+    const TotalPrice = (PRICE.amount * amount).toFixed(2);
+
+    console.log(attributes);
     return (
       <div>
         <Element>
           <ElementData>
-            {/* Title  */}
-
+            {/* Title Of Cart Product  */}
             <StyledSpan
               fontFamily='raleway'
               fontWeight='600'
               fontSize='1.6rem'
               margin='0 0 7px 0'
             >
-              Apollo Runner Short
-              {/* Title of Product */}
+              {name}
             </StyledSpan>
 
             {/* Price Container... */}
-
             <PriceContainer>
-              <StyledSpan fontWeight='900' fontSize='10px'>
+              <StyledSpan fontWeight='900' fontSize='14px' margin='0 0 5px 0'>
                 PRICE:
               </StyledSpan>
-              <StyledSpan fontWeight='900' fontSize='20px' fontFamily='raleway'>
-                50.00$
+              <StyledSpan fontWeight='700' fontSize='20px' fontFamily='Arial'>
+                {TotalPrice} {PRICE.currency.symbol}
                 {/* PRICE */}
               </StyledSpan>
             </PriceContainer>
 
-            {/* Size Container... */}
-            <SizeContainer>
-              <AttributeElement
-                attributes={attributes}
-                child='SIZE'
-                width='35px'
-                height='27px'
-                hoveredBackgroundColor='#0f0f0f'
-                hoveredColor='#fff'
-              />
-            </SizeContainer>
-
-            {/* Colors Container... */}
-            <ColorsContainer>
-              <AttributeElement
-                attributes={colorsAttributes}
-                colors
-                child='COLOR'
-                width='12px'
-                height='12px'
-              />
-            </ColorsContainer>
+            {attributes.map((attribute) => (
+              <AttributeContainer key={attribute.id}>
+                <AttributeElement attribute={attribute} id={attribute.id} />
+              </AttributeContainer>
+            ))}
           </ElementData>
 
           {/* Show The Available gallery products */}
@@ -65,39 +70,16 @@ class CartElement extends Component {
           <ElementGallery>
             {/* Buttons to increase and decrease amount of cart element */}
             <Actions>
-              <Button
-                width='40px'
-                backgroundColor='transparent'
-                hoveredBackgroundColor='#0f0f0f'
-                hoveredColor='#fff'
-                color='#000'
-                padding='8px'
-                fontSize='15px'
-                border='1px solid #ccc'
-              >
+              <ActionButton onClick={this.increaseHandler.bind(this)}>
                 +
-              </Button>
-              <Amount>2</Amount>
-              <Button
-                width='40px'
-                backgroundColor='transparent'
-                hoveredBackgroundColor='#0f0f0f'
-                hoveredColor='#fff'
-                color='#000'
-                padding='8px'
-                fontSize='15px'
-                border='1px solid #ccc'
-              >
+              </ActionButton>
+              <Amount>{amount}</Amount>
+              <ActionButton onClick={this.decreaseHandler.bind(this)}>
                 -
-              </Button>
+              </ActionButton>
             </Actions>
 
-            <Image
-              alt='product gallery'
-              src={testImage}
-              width={260}
-              height={280}
-            />
+            <Image alt='product gallery' src={gallery[0]} />
           </ElementGallery>
         </Element>
       </div>
@@ -105,44 +87,19 @@ class CartElement extends Component {
   }
 }
 
-const Image = styled.img``;
-const Element = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid #eee;
-`;
-const ElementData = styled.div`
-  width: 30%;
-`;
-const ElementGallery = styled.div`
-  display: flex;
-`;
+const mapStateToProps = (state) => {
+  return {
+    curCurrency: state.price.priceCurrency,
+  };
+};
 
-const SizeContainer = styled.div`
-  margin: 1rem 0;
-`;
-const ColorsContainer = styled.div``;
-
-const PriceContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 2rem;
-`;
-
-const Amount = styled.h5`
-  font-size: 20px;
-  padding: 8px;
-  width: 30px;
-  /* background-color: #0f0f0f;
-  color: #fff; */
-  text-align: center;
-`;
-const Actions = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  margin: 1rem;
-`;
-export default CartElement;
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    increase: () =>
+      dispatch(
+        addToCart({ ...ownProps.product, amount: ownProps.product.amount + 1 })
+      ),
+    decrease: () => dispatch(removeFromCart(ownProps.product.id)),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(CartElement);

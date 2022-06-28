@@ -4,18 +4,29 @@ import logo from '../../assets/logo.png';
 import cartLogo from '../../assets/cartLogo.png';
 import dollar from '../../assets/dollar.png';
 import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { showCartOverlay } from '../../store/cart-slice';
+import AvailableCurrencies from './Currencies';
+import {
+  HeaderContainer,
+  Nav,
+  NavItem,
+  ActionsLogo,
+  Actions,
+  CartLogo,
+  Badge,
+  Logo
+} from '../styles/header.style';
 
 const linkStyle = {
   textDecoration: 'none',
   color: 'inherit',
 };
 
-const active = `
-color: #5ece7b;
-border-bottom: 2px solid #5ece7b;
-font-weight: 700;
-`;
 class Header extends Component {
+  showCartOverlay() {
+    this.props.showCartOverlay();
+  }
   render() {
     return (
       <HeaderContainer>
@@ -36,49 +47,30 @@ class Header extends Component {
             </NavLink>
           </NavItem>
         </Nav>
-        <img src={logo} alt='logo' />
+        <Logo src={logo} alt='logo' />
         <Actions>
-          <ActionsLogo src={dollar} alt='logo' />
-          <ActionsLogo src={cartLogo} alt='logo' />
+          <div>
+            {/* <ActionsLogo src={dollar} alt='logo' /> */}
+            <AvailableCurrencies />
+          </div>
+          <CartLogo onClick={this.showCartOverlay.bind(this)}>
+            <ActionsLogo src={cartLogo} alt='logo' />
+            <Badge>{this.props.totalQuantity}</Badge>
+          </CartLogo>
         </Actions>
       </HeaderContainer>
     );
   }
 }
 
-const HeaderContainer = styled.div`
-  font-family: 'Raleway', sans-serif;
-  font-weight: 550;
-  color: #1d1f22;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 20px;
-`;
-const Nav = styled.nav`
-  display: flex;
-  align-items: center;
-`;
-
-const NavItem = styled.span`
-  margin-right: 30px;
-  padding-bottom: 15px;
-  cursor: pointer;
-  &:hover {
-    color: #5ece7b;
-    border-bottom: 2px solid #5ece7b;
-    font-weight: 700;
-  }
-`;
-
-const ActionsLogo = styled.img`
-  margin-left: 15px;
-  padding: 5px;
-  cursor: pointer;
-`;
-const Actions = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-export default Header;
+const mapStateToProps = (state) => {
+  return {
+    totalQuantity: state.cart.totalQuantity,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    showCartOverlay: () => dispatch(showCartOverlay()),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

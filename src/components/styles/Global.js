@@ -24,7 +24,7 @@ const color = (props) => props.color;
 export const Button = styled.button`
   outline: none;
   border: none;
-  font-weight: 550;
+  font-weight: 500;
   background-color: ${backgroundColor};
   margin: ${margin};
   padding: ${padding};
@@ -49,7 +49,9 @@ export const Attribute = styled.div`
   margin-right: 3px;
   padding: 3px;
   background-color: ${backgroundColor};
-  font-size: ${size};
+  font-size: 18px;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 900;
   width: ${width};
   height: ${height};
   display: grid;

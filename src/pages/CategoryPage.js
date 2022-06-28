@@ -15,8 +15,8 @@ class CategoryPage extends Component {
 }
 
 const CategoryHeader = styled.span`
-  font-size: 2rem;
-  font-weight: 500;
+  font-size: 2.5rem;
+  font-weight: 900;
   font-family: 'raleway', sans-serif;
 `;
 
