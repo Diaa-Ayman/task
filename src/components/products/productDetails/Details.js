@@ -21,10 +21,14 @@ let ConvertStringToHTML = function (str) {
 };
 
 export class Details extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       attributes: [],
+      price:
+        this.props.product?.prices.find(
+          (price) => price.currency.symbol === this.props.curCurrency
+        ) || {},
     };
   }
   addToCartHandler() {
@@ -50,14 +54,27 @@ export class Details extends Component {
     );
     document.getElementById('desc')?.appendChild(desc);
   }
+
+  //   TO GET TOTAL AMOUNT...
+
+  // componentDidUpdate(prevProps) {
+  //   if (this.props.curCurrency !== prevProps.curCurrency) {
+  //     const PRICE = this.props.product?.prices.find(
+  //       (price) => price.currency.symbol === this.props.curCurrency
+  //     );
+  //     this.setState({
+  //       price: PRICE,
+  //     });
+  //   }
+  // }
+
   render() {
     const { name, description, inStock, brand, attributes, prices } =
       this.props?.product || {};
 
     const PRICE = prices?.find(
-      (price) => price.currency.label === this.props.curCurrency
+      (price) => price.currency.symbol === this.props.curCurrency
     );
-
     // console.log(this.props.curCurrency);
     return (
       // This is a right column for Details Page....
@@ -127,14 +144,13 @@ export class Details extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    curCurrency: state.price.priceCurrency,
+    curCurrency: state.cart.priceCurrency,
   };
 };
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    addToCart: (attributes) => {
+    addToCart: (attributes, currentPrice) => {
       const product = ownProps?.product;
-      const currentCurrency = ownProps?.curCurrency;
       dispatch(
         addToCart({
           name: product.name,
@@ -143,7 +159,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
           amount: 1,
           gallery: product.gallery,
           attributes: attributes || [],
-          currentCurrency: currentCurrency,
         })
       );
     },

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Button } from './Global';
-
+import { slide_Right, slide_Left } from './productDetails.style';
 const Center = styled.h1`
   display: grid;
   place-items: center;
@@ -43,9 +43,11 @@ const Element = styled.div`
 `;
 const ElementData = styled.div`
   width: 30%;
+  animation: ${slide_Right} 800ms ease-out forwards;
 `;
 const ElementGallery = styled.div`
   display: flex;
+  animation: ${slide_Left} 800ms ease-out forwards;
 `;
 
 const AttributeContainer = styled.div`

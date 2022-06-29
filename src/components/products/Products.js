@@ -57,7 +57,7 @@ class Products extends Component {
       <ProductsContainer>
         {products?.products.map((product) => {
           const price = product?.prices.find(
-            (price) => price.currency.label === this.props.curCurrency
+            (price) => price.currency.symbol === this.props.curCurrency
           );
 
           return (
@@ -77,7 +77,7 @@ class Products extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    curCurrency: state.price.priceCurrency,
+    curCurrency: state.cart.priceCurrency,
   };
 };
 

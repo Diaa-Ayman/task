@@ -1,4 +1,15 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const slide_Down = keyframes`
+   from {
+    opacity: 0;
+    transform: translateY(-3rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
 const HeaderContainer = styled.div`
   font-family: 'Raleway', sans-serif;
@@ -8,6 +19,8 @@ const HeaderContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-top: 20px;
+  z-index: 100;
+  animation: ${slide_Down} 800ms ease-out forwards;
 `;
 const Nav = styled.nav`
   display: flex;

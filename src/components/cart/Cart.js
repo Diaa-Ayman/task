@@ -7,6 +7,7 @@ import { Center } from '../styles/cart.style';
 class Cart extends Component {
   render() {
     // const cartProducts = [1, 2, 3, 4];
+    console.log(this.props?.cartProducts);
     if (this.props.cartProducts.length === 0) {
       return <Center>Your Cart Is Empty!</Center>;
     }

@@ -1,4 +1,15 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const scale_ON = keyframes`
+   from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+`;
 
 const ProductsContainer = styled.div`
   display: flex;
@@ -14,6 +25,7 @@ const ProductCard = styled.div`
   margin-right: 15px;
   margin-top: 25px;
   transition: 0.5s;
+  animation: ${scale_ON} 800ms ease-out;
   /* padding: 10px;
 margin: 6px; */
   &:hover {

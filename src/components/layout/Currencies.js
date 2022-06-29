@@ -2,7 +2,7 @@ import { Component } from 'react';
 import fetchData from '../../api/fetchFun';
 import { gql } from '@apollo/client';
 import { connect } from 'react-redux';
-import { changeCurrency } from '../../store/price-slice';
+import { changeCurrency } from '../../store/cart-slice';
 import { Select, Option } from '../styles/currencies.style';
 // import { Button } from './Global';
 const GET_CURRENCY = gql`
@@ -41,7 +41,7 @@ class AvailableCurrencies extends Component {
       <Select onChange={this.getCurrencyHandler.bind(this)}>
         {this.state.currencies.map((currency) => (
           <Option
-            value={currency.label}
+            value={currency.symbol}
             key={currency.symbol}
             // onClick={this.clickCurrency.bind(this)}
           >

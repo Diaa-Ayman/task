@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialCartState = {
   items: [],
   totalQuantity: 0,
+  priceCurrency: '$',
   totalAmount: 0, // Need Some Fix to find the Current Price
   cartOverlayVisible: false,
 };
@@ -15,10 +16,11 @@ const CartSlice = createSlice({
       state.totalQuantity = state.totalQuantity + 1;
 
       // const currentPrice = newItem.prices.find(
-      //   (price) => price.currency.label === 'USD'
+      //   (price) => price.currency.symbol === state.priceCurrency
       // );
 
-      // state.totalAmount = state.totalAmount + newItem.amount * currentPrice;
+      // state.totalAmount =
+      //   state.totalAmount + newItem.amount * currentPrice.amount;
       const exisitingItem = state.items.find((item) => item.id === newItem.id);
       if (!exisitingItem) {
         state.items.push({
@@ -30,7 +32,7 @@ const CartSlice = createSlice({
           //   desc: newItem.desc,
           //   countInStock: newItem.countInStock,
           gallery: newItem.gallery,
-          currentCurrency: newItem.currentCurrency,
+          currentPrice: newItem.currentPrice,
         });
       } else {
         exisitingItem.amount++;
@@ -42,8 +44,12 @@ const CartSlice = createSlice({
       state.totalQuantity--;
       const id = action.payload;
       const exisitingItem = state.items.find((item) => item.id === id);
-      // state.totalAmount = state.totalAmount - exisitingItem.price;
 
+      // const currenctPrice = exisitingItem.prices.find(
+      //   (price) => price.currency.symbol === state.priceCurrency
+      // );
+
+      // state.totalAmount = state.totalAmount - currenctPrice.amount;
       if (exisitingItem.amount === 1) {
         state.items = state.items.filter((item) => item.id !== id);
       } else {
@@ -52,22 +58,25 @@ const CartSlice = createSlice({
           exisitingItem.totalPrice - exisitingItem.price;
       }
     },
-    // clearCart(state) {
-    //   state = initialCartState;
-    // },
-    // removeCartItem(state, action) {
-    //   const id = action.payload;
-    //   state.items = state.items.filter((item) => item.id !== id);
-    // },
+
     showCartOverlay(state) {
       state.cartOverlayVisible = true;
     },
     hideCartOverlay(state) {
       state.cartOverlayVisible = false;
     },
+
+    changeCurrency(state, action) {
+      state.priceCurrency = action.payload;
+    },
   },
 });
 
-export const { addToCart, removeFromCart, hideCartOverlay, showCartOverlay } =
-  CartSlice.actions;
+export const {
+  addToCart,
+  removeFromCart,
+  hideCartOverlay,
+  showCartOverlay,
+  changeCurrency,
+} = CartSlice.actions;
 export default CartSlice;

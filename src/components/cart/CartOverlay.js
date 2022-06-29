@@ -39,7 +39,7 @@ class CartOverlay extends Component {
             Total
           </StyledSpan>
           <StyledSpan>
-            {this.props.currentCurrency} {this.props.totalAmount}
+            {this.props.currentCurrency} {this.props.totalAmount.toFixed(2)}
           </StyledSpan>
         </TotalAmount>
         <Actions>
@@ -65,7 +65,7 @@ const mapStateToProps = (state) => {
     cartProducts: state.cart.items,
     totalQuantity: state.cart.totalQuantity,
     totalAmount: state.cart.totalAmount,
-    currentCurrency: state.price.priceCurrency,
+    currentCurrency: state.cart.priceCurrency,
   };
 };
 

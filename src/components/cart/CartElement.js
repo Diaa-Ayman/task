@@ -28,11 +28,10 @@ class CartElement extends Component {
     const { name, id, gallery, prices, amount, attributes } =
       this.props?.product;
     const PRICE = prices.find(
-      (price) => price.currency.label === this.props.curCurrency
+      (price) => price.currency.symbol === this.props.curCurrency
     );
     const TotalPrice = (PRICE.amount * amount).toFixed(2);
 
-    console.log(attributes);
     return (
       <div>
         <Element>
@@ -89,16 +88,13 @@ class CartElement extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    curCurrency: state.price.priceCurrency,
+    curCurrency: state.cart.priceCurrency,
   };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    increase: () =>
-      dispatch(
-        addToCart({ ...ownProps.product, amount: ownProps.product.amount + 1 })
-      ),
+    increase: () => dispatch(addToCart({ ...ownProps.product, amount: 1 })),
     decrease: () => dispatch(removeFromCart(ownProps.product.id)),
   };
 };

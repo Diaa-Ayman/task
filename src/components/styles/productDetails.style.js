@@ -1,4 +1,25 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+export const slide_Left = keyframes`
+   from {
+    opacity: 0;
+    transform:  translateX(6rem)
+  }
+  to {
+    opacity: 1;
+    transform:  translateX(0)
+  }
+`;
+export const slide_Right = keyframes`
+   from {
+    opacity: 0;
+    transform:  translateX(-6rem)
+  }
+  to {
+    opacity: 1;
+    transform:  translateX(0)
+  }
+`;
 
 export const DetailsContainer = styled.div`
   display: flex;
@@ -11,6 +32,7 @@ export const DetailsContainer = styled.div`
 `;
 export const ProductGallery = styled.div`
   display: flex;
+  animation: ${slide_Right} 800ms ease-out forwards;
 `;
 export const GalleryImage = styled.img`
   object-fit: cover;
@@ -62,6 +84,8 @@ export const DetailsColumn = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
+  animation: ${slide_Left} 800ms ease-out forwards;
+
   /* @media (max-width: 1000px) {
     margin-top: 5rem;
     width: 100%;

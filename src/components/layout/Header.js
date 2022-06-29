@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
 import logo from '../../assets/logo.png';
 import cartLogo from '../../assets/cartLogo.png';
-import dollar from '../../assets/dollar.png';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { showCartOverlay } from '../../store/cart-slice';
@@ -15,7 +13,7 @@ import {
   Actions,
   CartLogo,
   Badge,
-  Logo
+  Logo,
 } from '../styles/header.style';
 
 const linkStyle = {
