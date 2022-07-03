@@ -8,7 +8,6 @@ import {
   DetailsColumn,
   AttributesContainer,
   LineDiv,
-  ProductTitle,
   Description,
   PriceContainer,
 } from '../../styles/productDetails.style';
@@ -25,18 +24,16 @@ export class Details extends Component {
     super(props);
     this.state = {
       attributes: [],
-      price:
-        this.props.product?.prices.find(
-          (price) => price.currency.symbol === this.props.curCurrency
-        ) || {},
     };
   }
+
+  // Add Item To the Cart and sending attributes as parameter
   addToCartHandler() {
     this.props.addToCart(this.state.attributes);
     this.props.history.push('/my-cart');
   }
 
-  // AN ISSUE
+  // get cart specific attributes...
   getCartItemAttributes(attr) {
     const exisitingAttribute = this.state.attributes.find(
       (attribute) => attribute.id === attr.id
@@ -48,11 +45,11 @@ export class Details extends Component {
     }
   }
 
-  componentDidMount() {
-    const desc = ConvertStringToHTML(
-      this.props.product?.description || <span></span>
-    );
-    document.getElementById('desc')?.appendChild(desc);
+  componentDidUpdate(prevProps) {
+    if (prevProps.product !== this.props.product) {
+      const desc = ConvertStringToHTML(this.props.product?.description);
+      document.getElementById('desc')?.appendChild(desc);
+    }
   }
 
   //   TO GET TOTAL AMOUNT...
@@ -69,12 +66,12 @@ export class Details extends Component {
   // }
 
   render() {
-    const { name, description, inStock, brand, attributes, prices } =
-      this.props?.product || {};
+    const { name, attributes, prices } = this.props?.product || {};
 
     const PRICE = prices?.find(
       (price) => price.currency.symbol === this.props.curCurrency
     );
+
     // console.log(this.props.curCurrency);
     return (
       // This is a right column for Details Page....
@@ -85,18 +82,6 @@ export class Details extends Component {
           {/* Title of Product */}
         </StyledSpan>
 
-        {/* ON REMOVE */}
-        <ProductTitle>
-          {/* Brand */}
-          <StyledSpan fontWeight='600' fontSize='1rem' color='#ccc'>
-            {brand}
-          </StyledSpan>
-          {/* ON_Stock or NOT */}
-          <StyledSpan fontWeight='600' fontSize='1rem'>
-            {inStock ? 'In_Stock' : 'Out_Of_Stock'}
-          </StyledSpan>
-        </ProductTitle>
-        {/* Line Div To remove */}
         <LineDiv />
 
         {/* All Attributes Of The Product Item */}
@@ -149,7 +134,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    addToCart: (attributes, currentPrice) => {
+    addToCart: (attributes) => {
       const product = ownProps?.product;
       dispatch(
         addToCart({
@@ -159,6 +144,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
           amount: 1,
           gallery: product.gallery,
           attributes: attributes || [],
+          currentPrice: '',
         })
       );
     },

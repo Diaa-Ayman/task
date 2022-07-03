@@ -7,6 +7,14 @@ const Center = styled.h1`
   font-family: 'arial', sans-serif;
   padding-top: 5rem;
 `;
+
+const OrderBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid #eee;
+  margin-top: 4rem;
+  padding-top: 1rem;
+`;
 const Image = styled.img`
   object-fit: cover;
   object-position: top;
@@ -87,4 +95,5 @@ export {
   Amount,
   Actions,
   Center,
+  OrderBox,
 };

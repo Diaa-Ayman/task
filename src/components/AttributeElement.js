@@ -19,12 +19,14 @@ export default class AttributeElement extends Component {
           {attribute.items.map((item) => (
             <Attribute
               onClick={async () => {
+                // when click on the specific Attribute it added to cart items attributes..
                 if (!this.state.items.includes(item)) {
                   await this.setState({
                     items: [...this.state.items, item],
                   });
                 }
 
+                // console.log(this.state.items);
                 this.props.getAttributes &&
                   this.props.getAttributes({
                     ...attribute,

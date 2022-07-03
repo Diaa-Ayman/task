@@ -3,6 +3,7 @@ import logo from '../../assets/logo.png';
 import cartLogo from '../../assets/cartLogo.png';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { gql } from '@apollo/client';
 import { showCartOverlay } from '../../store/cart-slice';
 import AvailableCurrencies from './Currencies';
 import {
@@ -15,35 +16,50 @@ import {
   Badge,
   Logo,
 } from '../styles/header.style';
+import fetchData from '../../api/fetchFun';
 
 const linkStyle = {
   textDecoration: 'none',
   color: 'inherit',
 };
-
+const GET_CATEGORIES_NAME = gql`
+  query {
+    categories {
+      name
+    }
+  }
+`;
 class Header extends Component {
+  constructor() {
+    super();
+    this.state = {
+      categories: [],
+    };
+  }
   showCartOverlay() {
     this.props.showCartOverlay();
+  }
+  async componentDidMount() {
+    try {
+      const data = await fetchData(GET_CATEGORIES_NAME);
+      this.setState({
+        categories: data.data.categories,
+      });
+    } catch (error) {
+      console.log('ERORR!!');
+    }
   }
   render() {
     return (
       <HeaderContainer>
         <Nav>
-          <NavItem>
-            <NavLink style={linkStyle} to='/all'>
-              ALL
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink style={linkStyle} to='/clothes'>
-              CLOTHES
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink style={linkStyle} to='/tech'>
-              TECH
-            </NavLink>
-          </NavItem>
+          {this.state.categories.map((category) => (
+            <NavItem key={category.name}>
+              <NavLink style={linkStyle} to={`/${category.name}`}>
+                {category.name.toUpperCase()}
+              </NavLink>
+            </NavItem>
+          ))}
         </Nav>
         <Logo src={logo} alt='logo' />
         <Actions>

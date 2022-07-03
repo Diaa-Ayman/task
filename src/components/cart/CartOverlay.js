@@ -47,11 +47,12 @@ class CartOverlay extends Component {
             border='.8px solid'
             hoveredColor='#fff'
             hoveredBackgroundColor='#0f0f0f'
+            width='50%'
             onClick={this.openCartHandler.bind(this)}
           >
             VIEW BAG
           </ActionButton>
-          <ActionButton backgroundColor='#55E180' color='#fff'>
+          <ActionButton backgroundColor='#55E180' color='#fff' width='50%'>
             CHECK OUT
           </ActionButton>
         </Actions>

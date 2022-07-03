@@ -98,6 +98,7 @@ export const AttributesContainer = styled.div`
 
 export const LineDiv = styled.div`
   border-bottom: 1px solid #eee;
+  margin: 2rem 0 1rem 0;
   height: 0.8px; ;
 `;
 
@@ -109,8 +110,8 @@ export const ProductTitle = styled.div`
 `;
 
 export const Description = styled.div`
-  font-size: 1rem;
-  font-weight: 500;
+  font-family: sans-serif, arial;
+  color: #6a6e6b;
 `;
 export const PriceContainer = styled.div`
   display: flex;

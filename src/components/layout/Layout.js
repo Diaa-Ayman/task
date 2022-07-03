@@ -23,6 +23,7 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(Layout);
+
 const OutputLayout = styled.div`
   padding: 0 8%;
 `;

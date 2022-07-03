@@ -4,23 +4,18 @@ const initialCartState = {
   items: [],
   totalQuantity: 0,
   priceCurrency: '$',
-  totalAmount: 0, // Need Some Fix to find the Current Price
+  totalAmount: 0,
   cartOverlayVisible: false,
 };
 const CartSlice = createSlice({
   name: 'cart',
   initialState: initialCartState,
   reducers: {
+    // Add Item To Cart if it's already in the cart or not
     addToCart(state, action) {
       const newItem = action.payload;
       state.totalQuantity = state.totalQuantity + 1;
 
-      // const currentPrice = newItem.prices.find(
-      //   (price) => price.currency.symbol === state.priceCurrency
-      // );
-
-      // state.totalAmount =
-      //   state.totalAmount + newItem.amount * currentPrice.amount;
       const exisitingItem = state.items.find((item) => item.id === newItem.id);
       if (!exisitingItem) {
         state.items.push({
@@ -29,10 +24,7 @@ const CartSlice = createSlice({
           prices: newItem.prices,
           amount: newItem.amount,
           attributes: newItem.attributes,
-          //   desc: newItem.desc,
-          //   countInStock: newItem.countInStock,
           gallery: newItem.gallery,
-          currentPrice: newItem.currentPrice,
         });
       } else {
         exisitingItem.amount++;
@@ -40,16 +32,12 @@ const CartSlice = createSlice({
           exisitingItem.totalPrice + exisitingItem.price;
       }
     },
+
+    //  remove From Cart
     removeFromCart(state, action) {
       state.totalQuantity--;
       const id = action.payload;
       const exisitingItem = state.items.find((item) => item.id === id);
-
-      // const currenctPrice = exisitingItem.prices.find(
-      //   (price) => price.currency.symbol === state.priceCurrency
-      // );
-
-      // state.totalAmount = state.totalAmount - currenctPrice.amount;
       if (exisitingItem.amount === 1) {
         state.items = state.items.filter((item) => item.id !== id);
       } else {
@@ -59,6 +47,9 @@ const CartSlice = createSlice({
       }
     },
 
+    getTotalAmount(state, action) {
+      state.totalAmount = action.payload;
+    },
     showCartOverlay(state) {
       state.cartOverlayVisible = true;
     },
@@ -78,5 +69,6 @@ export const {
   hideCartOverlay,
   showCartOverlay,
   changeCurrency,
+  getTotalAmount,
 } = CartSlice.actions;
 export default CartSlice;

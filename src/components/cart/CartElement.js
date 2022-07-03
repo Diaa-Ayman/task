@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import { StyledSpan } from '../styles/Global';
 import AttributeElement from '../AttributeElement';
 import { connect } from 'react-redux';
-import { addToCart, removeFromCart } from '../../store/cart-slice';
+import {
+  addToCart,
+  removeFromCart,
+  // getCartItemCurrentPrice,
+} from '../../store/cart-slice';
 
 import {
   Image,
@@ -17,11 +21,22 @@ import {
 } from '../styles/cart.style';
 
 class CartElement extends Component {
+  // increase item amount by 1
   increaseHandler() {
     this.props.increase();
   }
+
+  // decrease item amount by 1
   decreaseHandler() {
     this.props.decrease();
+  }
+
+  componentDidMount() {
+    const PRICE = this.props?.product.prices.find(
+      (price) => price.currency.symbol === this.props.curCurrency
+    );
+
+    this.props.getPrices && this.props.getPrices(PRICE);
   }
   render() {
     // console.log(this.props.product);
@@ -30,6 +45,7 @@ class CartElement extends Component {
     const PRICE = prices.find(
       (price) => price.currency.symbol === this.props.curCurrency
     );
+
     const TotalPrice = (PRICE.amount * amount).toFixed(2);
 
     return (
@@ -96,6 +112,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     increase: () => dispatch(addToCart({ ...ownProps.product, amount: 1 })),
     decrease: () => dispatch(removeFromCart(ownProps.product.id)),
+    // getPrice: () => dispatch(getCartItemCurrentPrice()),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(CartElement);

@@ -6,7 +6,7 @@ const ActionButton = styled(Button)`
   margin: 5px;
   background: transparent;
   font-size: 1rem;
-  width: 50%;
+  width: ${(props) => props.width};
   background-color: ${(props) => props.backgroundColor};
   color: ${(props) => props.color};
   border: ${(props) => props.border};
