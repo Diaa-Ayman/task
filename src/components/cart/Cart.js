@@ -4,18 +4,12 @@ import CartElement from './CartElement';
 import { StyledSpan } from '../styles/Global';
 import { connect } from 'react-redux';
 import { Center } from '../styles/cart.style';
-import { getTotalAmount } from '../../store/cart-slice';
 import { OrderBox } from '../styles/cart.style';
 import { ActionButton } from '../styles/CartOverlay.style';
 
-let totalAmt = 0;
 let tax = 0.21;
 class Cart extends Component {
-  // method for calculating total Amount
-  calcTotalAmountHandler(price) {
-    totalAmt = totalAmt + price.amount;
-    this.props.getTotalAmount(totalAmt);
-  }
+ 
   render() {
     // const cartProducts = [1, 2, 3, 4];
 
@@ -31,8 +25,7 @@ class Cart extends Component {
           {this.props?.cartProducts.map((product) => (
             <CartElement
               product={product}
-              key={product.id}
-              getPrices={this.calcTotalAmountHandler.bind(this)}
+              key={product.uid}
             />
           ))}
         </Container>
@@ -77,9 +70,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getTotalAmount: (totalAmount) => dispatch(getTotalAmount(totalAmount)),
-  };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(Cart);
+export default connect(mapStateToProps)(Cart);

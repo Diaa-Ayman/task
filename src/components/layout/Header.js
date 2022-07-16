@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import logo from '../../assets/logo.png';
 import cartLogo from '../../assets/cartLogo.png';
+import topArrow from '../../assets/top.png'
+import bottomArrow from '../../assets/bottom.png'
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { gql } from '@apollo/client';
-import { showCartOverlay } from '../../store/cart-slice';
-import AvailableCurrencies from './Currencies';
+import { showCartOverlay, showCurrenciesOverlay } from '../../store/overlays-slice';
+ 
 import {
   HeaderContainer,
   Nav,
@@ -15,13 +17,14 @@ import {
   CartLogo,
   Badge,
   Logo,
+  CurrentCurrency
 } from '../styles/header.style';
 import fetchData from '../../api/fetchFun';
 
-const linkStyle = {
-  textDecoration: 'none',
-  color: 'inherit',
-};
+// const linkStyle = {
+//   textDecoration: 'none',
+//   color: 'inherit',
+// };
 const GET_CATEGORIES_NAME = gql`
   query {
     categories {
@@ -39,6 +42,9 @@ class Header extends Component {
   showCartOverlay() {
     this.props.showCartOverlay();
   }
+  showCurrenciesOverlay() {
+    this.props.showCurrenciesOverlay();
+  }
   async componentDidMount() {
     try {
       const data = await fetchData(GET_CATEGORIES_NAME);
@@ -55,7 +61,7 @@ class Header extends Component {
         <Nav>
           {this.state.categories.map((category) => (
             <NavItem key={category.name}>
-              <NavLink style={linkStyle} to={`/${category.name}`}>
+              <NavLink className='nav-link'  to={`/${category.name}`}>
                 {category.name.toUpperCase()}
               </NavLink>
             </NavItem>
@@ -65,7 +71,13 @@ class Header extends Component {
         <Actions>
           <div>
             {/* <ActionsLogo src={dollar} alt='logo' /> */}
-            <AvailableCurrencies />
+            <CurrentCurrency onClick={this.showCurrenciesOverlay.bind(this)}>
+              <span>{this.props.currentCurrency}</span>    
+              {this.props.currenciesOverlayVisible ? 
+              <img src={topArrow} alt='top' /> : 
+              <img src={bottomArrow} alt='bottom' />}   
+            </CurrentCurrency>
+            {/* <AvailableCurrencies /> */}
           </div>
           <CartLogo onClick={this.showCartOverlay.bind(this)}>
             <ActionsLogo src={cartLogo} alt='logo' />
@@ -80,11 +92,14 @@ class Header extends Component {
 const mapStateToProps = (state) => {
   return {
     totalQuantity: state.cart.totalQuantity,
+    currentCurrency: state.cart.priceCurrency,
+    currenciesOverlayVisible: state.overlays.currenciesOverlayVisible
   };
 };
 const mapDispatchToProps = (dispatch) => {
   return {
     showCartOverlay: () => dispatch(showCartOverlay()),
+    showCurrenciesOverlay: () => dispatch(showCurrenciesOverlay()),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

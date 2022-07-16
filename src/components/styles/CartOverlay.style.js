@@ -3,7 +3,7 @@ import { Button } from './Global';
 
 const ActionButton = styled(Button)`
   padding: 10px 12px;
-  margin: 5px;
+  margin-right:5px;
   background: transparent;
   font-size: 1rem;
   width: ${(props) => props.width};
@@ -19,7 +19,7 @@ const Container = styled.div`
   margin-top: 2rem;
   margin-bottom: 2rem;
   img {
-    width: 200px;
+    width: 170px;
     object-fit: contain;
   }
 `;
@@ -31,6 +31,7 @@ const Actions = styled.div`
 const TotalAmount = styled.div`
   display: flex;
   justify-content: space-between;
+  margin:1rem 0;
 `;
 
 export { Actions, Container, ActionButton, TotalAmount };

@@ -12,61 +12,30 @@ import {
   PriceContainer,
 } from '../../styles/productDetails.style';
 
-// A FUNCTION TO CONVERT DESCRIPTION        HAS ISSUE
-let ConvertStringToHTML = function (str) {
-  let parser = new DOMParser();
-  let doc = parser.parseFromString(str, 'text/html');
-  return doc.body.firstChild;
-};
-
 export class Details extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      attributes: [],
+      counter: 0,
+      completedOrder: true,
     };
   }
 
+
   // Add Item To the Cart and sending attributes as parameter
   addToCartHandler() {
-    this.props.addToCart(this.state.attributes);
+    this.props.addToCart();
     this.props.history.push('/my-cart');
   }
 
   // get cart specific attributes...
-  getCartItemAttributes(attr) {
-    const exisitingAttribute = this.state.attributes.find(
-      (attribute) => attribute.id === attr.id
-    );
-    if (!exisitingAttribute) {
-      this.setState({
-        attributes: [...this.state.attributes, attr],
-      });
-    }
+  getCartItemAttributes(attributeItem) {
+    this.setState({attr: this.state.counter + 1})
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.product !== this.props.product) {
-      const desc = ConvertStringToHTML(this.props.product?.description);
-      document.getElementById('desc')?.appendChild(desc);
-    }
-  }
-
-  //   TO GET TOTAL AMOUNT...
-
-  // componentDidUpdate(prevProps) {
-  //   if (this.props.curCurrency !== prevProps.curCurrency) {
-  //     const PRICE = this.props.product?.prices.find(
-  //       (price) => price.currency.symbol === this.props.curCurrency
-  //     );
-  //     this.setState({
-  //       price: PRICE,
-  //     });
-  //   }
-  // }
 
   render() {
-    const { name, attributes, prices } = this.props?.product || {};
+    const { inStock, name, brand, attributes, prices, description } = this.props?.product || {};
 
     const PRICE = prices?.find(
       (price) => price.currency.symbol === this.props.curCurrency
@@ -77,17 +46,21 @@ export class Details extends Component {
       // This is a right column for Details Page....
       <DetailsColumn>
         <StyledSpan fontWeight='900' fontSize='1.6rem' margin='0 0 10px 0'>
-          {name}
-
+          {brand}
           {/* Title of Product */}
         </StyledSpan>
-
+        <StyledSpan fontWeight='500'  fontSize='1.6rem' margin='0 0 10px 0'>
+          {name}
+          {/* Title of Product */}
+        </StyledSpan>
         <LineDiv />
-
         {/* All Attributes Of The Product Item */}
         {attributes?.map((attribute) => (
           <AttributesContainer key={attribute.id}>
             <AttributeElement
+              highlight
+              hoverBg = '#0f0f0f'
+              hoverColor = '#fff'
               getAttributes={this.getCartItemAttributes.bind(this)}
               attribute={attribute}
               id={attribute.id}
@@ -105,23 +78,17 @@ export class Details extends Component {
           </StyledSpan>
         </PriceContainer>
         <Button
-          onClick={this.addToCartHandler.bind(this)}
-          padding='15px 0'
+          onClick={inStock ? this.addToCartHandler.bind(this) : undefined}
+          padding='14px 0'
           margin='2rem 0'
           color='#fff'
-          width='100%'
+          width='75%'
           backgroundColor='#5ECE7B'
         >
           ADD TO CART
         </Button>
-        {/* <StyledSpan
-          id='desc'
-          fontSize='17px'
-          fontWeight='500'
-          width='100%'
-        ></StyledSpan> */}
-        {/* <div id='desc'></div> */}
-        <Description id='desc'></Description>
+        {!this.state.completedOrder && <StyledSpan color='red' margin='1rem 0'>Please Select All Attirubtes!</StyledSpan>}
+        <Description dangerouslySetInnerHTML={{__html: description}}></Description>
       </DetailsColumn>
     );
   }
@@ -134,17 +101,30 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    addToCart: (attributes) => {
+    addToCart: () => {
       const product = ownProps?.product;
+      let UID = ''
+
+      product.attributes.forEach(attribute => {
+
+          let selectedItemOfEach = attribute.items.find(item => item.selected)
+          if(!selectedItemOfEach){
+            attribute.items[0].selected = true;
+            selectedItemOfEach = attribute.items.find(item => item.selected)
+          }
+            UID += selectedItemOfEach.id.toString()
+        })
+        UID = UID +'_'+product.name.replace(/ +/g, "")
       dispatch(
         addToCart({
+          uid: UID ,
           name: product.name,
           id: product.id,
           prices: product.prices,
           amount: 1,
           gallery: product.gallery,
-          attributes: attributes || [],
-          currentPrice: '',
+          attributes: product.attributes,
+          brand: product.brand,
         })
       );
     },

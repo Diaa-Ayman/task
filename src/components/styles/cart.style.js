@@ -13,6 +13,7 @@ const OrderBox = styled.div`
   flex-direction: column;
   border-top: 1px solid #eee;
   margin-top: 4rem;
+  margin-bottom:2rem;
   padding-top: 1rem;
 `;
 const Image = styled.img`
@@ -41,6 +42,11 @@ const ActionButton = styled(Button)`
     background-color: #0f0f0f;
     color: #fff;
   }
+  ${({overlay}) => overlay && `
+    padding: 3px;
+    width: 25px;
+    height: 25px;
+  `}
 `;
 const Element = styled.div`
   display: flex;
@@ -72,8 +78,6 @@ const Amount = styled.h5`
   font-size: 20px;
   padding: 8px;
   width: 30px;
-  /* background-color: #0f0f0f;
-  color: #fff; */
   text-align: center;
 `;
 const Actions = styled.div`
@@ -84,6 +88,25 @@ const Actions = styled.div`
   margin: 0 1rem;
 `;
 
+const Title = styled.div`
+  display:flex;
+  flex-direction: column;
+`
+
+const ImageContainer = styled.div`
+  position: relative;
+`
+const ArrowsContainer = styled.div`
+position:absolute;
+bottom: 10px;
+right: 10px;
+`
+const Arrow = styled.img`
+  width: 20px;
+  height: 20px;
+  margin: 4px;
+  cursor: pointer;
+`
 export {
   Image,
   ActionButton,
@@ -96,4 +119,8 @@ export {
   Actions,
   Center,
   OrderBox,
+  Title,
+  ImageContainer,
+  ArrowsContainer, 
+  Arrow,
 };

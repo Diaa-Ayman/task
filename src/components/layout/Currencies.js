@@ -1,30 +1,29 @@
 import { Component } from 'react';
 import fetchData from '../../api/fetchFun';
-import { gql } from '@apollo/client';
 import { connect } from 'react-redux';
 import { changeCurrency } from '../../store/cart-slice';
-import { Select, Option } from '../styles/currencies.style';
-// import { Button } from './Global';
-const GET_CURRENCY = gql`
-  query {
-    currencies {
-      label
-      symbol
-    }
-  }
-`;
+import { CurrenciesContanier, Currency } from '../styles/currencies.style';
+import {GET_CURRENCY} from '../../api/queries'
+import Modal from '../Modal';
+import {hideCurrenciesOverlay} from '../../store/overlays-slice'
 
-class AvailableCurrencies extends Component {
-  constructor(props) {
-    super(props);
+ class AvailableCurrencies extends Component {
+
+    constructor() {
+    super();
     this.state = {
       currencies: [],
-      currentCurrency: '',
     };
   }
 
-  getCurrencyHandler(event) {
-    this.props.changeCurrency(event.target.value);
+    getCurrencyHandler(currency) {
+    this.props.changeCurrency(currency.symbol);
+    this.props.hideCurrenciesOverlay();
+
+  }
+
+  hideCurrenciesOverlay() {
+    this.props.hideCurrenciesOverlay();
   }
   async componentDidMount() {
     try {
@@ -38,26 +37,21 @@ class AvailableCurrencies extends Component {
   }
   render() {
     return (
-      <Select onChange={this.getCurrencyHandler.bind(this)}>
-        {this.state.currencies.map((currency) => (
-          <Option
-            value={currency.symbol}
-            key={currency.symbol}
-            // onClick={this.clickCurrency.bind(this)}
-          >
-            {' '}
-            {currency.symbol + ' '}
-            {currency.label}
-          </Option>
-        ))}
-      </Select>
-    );
+      <Modal padding='0rem' top='4rem' left='81%' boxShadow = '1px 0px 5px 2px #eee' onClick={this.hideCurrenciesOverlay.bind(this)}>
+      <CurrenciesContanier>
+        {this.state.currencies.map((currency) => <Currency key={currency.symbol} onClick={this.getCurrencyHandler.bind(this, currency)}>
+          {currency.symbol}{' '}{currency.label}
+        </Currency>)}
+      </CurrenciesContanier>
+      </Modal>
+    )
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     changeCurrency: (currency) => dispatch(changeCurrency(currency)),
+    hideCurrenciesOverlay: () => dispatch(hideCurrenciesOverlay()),
   };
 };
 

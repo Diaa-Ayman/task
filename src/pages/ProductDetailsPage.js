@@ -5,6 +5,7 @@ import ProductDetails from '../components/products/productDetails/ProductDetails
 import { withRouter } from 'react-router';
 class ProductDetailsPage extends Component {
   render() {
+
     const productId = this.props.match.params.productId;
     return (
       <div>

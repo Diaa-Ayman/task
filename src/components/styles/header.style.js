@@ -35,11 +35,18 @@ const Logo = styled.img`
 const NavItem = styled.span`
   margin-right: 30px;
   padding-bottom: 15px;
+  text-decoration: none !important;
+  color: #000 !important;
   cursor: pointer;
   &:hover {
     color: #5ece7b;
     border-bottom: 2px solid #5ece7b;
     font-weight: 700;
+  }
+
+  .nav-link{
+    text-decoration: none;
+    color: inherit;
   }
 `;
 
@@ -76,6 +83,16 @@ const Badge = styled.span`
   }
 `;
 
+const CurrentCurrency = styled.div`
+  display: flex;
+  align-items:center ;
+  justify-content:space-between ;
+  font-size:17px;
+  font-weight:700;
+  width:35px;
+  margin-right:20px;
+  cursor: pointer;
+`
 export {
   HeaderContainer,
   Logo,
@@ -85,4 +102,5 @@ export {
   Actions,
   CartLogo,
   Badge,
+  CurrentCurrency
 };

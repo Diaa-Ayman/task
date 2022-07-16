@@ -26,9 +26,7 @@ export const DetailsContainer = styled.div`
   margin: 1rem 0;
   overflow: hidden;
   flex-wrap: wrap;
-  /* @media (max-width: 1070px) {
-    align-items: center;
-  } */
+
 `;
 export const ProductGallery = styled.div`
   display: flex;
@@ -65,11 +63,7 @@ export const Image = styled.img`
   height: 500px;
   object-fit: contain;
   object-position: top;
-  /* @media (max-width: 1070px) {
-    margin-top: 5rem;
-    width: 500px;
-    height: 400px;
-  } */
+
   @media (max-width: 750px) {
     width: 400px;
     height: 350px;
@@ -86,10 +80,7 @@ export const DetailsColumn = styled.div`
   flex: 1;
   animation: ${slide_Left} 800ms ease-out forwards;
 
-  /* @media (max-width: 1000px) {
-    margin-top: 5rem;
-    width: 100%;
-  } */
+ 
 `;
 
 export const AttributesContainer = styled.div`

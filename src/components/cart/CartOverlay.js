@@ -4,7 +4,7 @@ import { StyledSpan } from '../styles/Global';
 import { connect } from 'react-redux';
 import CartElement from './CartElement';
 import { withRouter } from 'react-router';
-import { hideCartOverlay } from '../../store/cart-slice';
+import { hideCartOverlay } from '../../store/overlays-slice';
 
 import {
   ActionButton,
@@ -18,9 +18,13 @@ class CartOverlay extends Component {
     this.props.hideOverlay();
     this.props.history.push('/my-cart');
   }
+
+  hideOverlayHandler() {
+    this.props.hideOverlay();
+  }
   render() {
     return (
-      <Modal>
+      <Modal padding='1rem' backgroundColor = 'rgba(0, 0, 0, 0.75)' top='4rem' left='63%' width='350px' onClick = {this.hideOverlayHandler.bind(this)}>
         <StyledSpan
           fontSize='1rem'
           fontWeight='bolder'
@@ -31,14 +35,14 @@ class CartOverlay extends Component {
         </StyledSpan>
         <Container>
           {this.props?.cartProducts.map((product) => (
-            <CartElement product={product} key={product.id} />
+            <CartElement overlay product={product} key={product.uid} />
           ))}
         </Container>
         <TotalAmount>
-          <StyledSpan fontSize='1.2rem' font-weight='700'>
+          <StyledSpan fontSize='1.2rem' fontWeight='900' fontFamily='raleway'>
             Total
           </StyledSpan>
-          <StyledSpan>
+          <StyledSpan fontSize='1.1rem' fontWeight='900' fontFamily = 'raleway'>
             {this.props.currentCurrency} {this.props.totalAmount.toFixed(2)}
           </StyledSpan>
         </TotalAmount>

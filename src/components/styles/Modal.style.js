@@ -12,24 +12,27 @@ const slide_Down = keyframes`
 `;
 const BackdropContainer = styled.div`
   position: fixed;
-  top: 0;
+  top: 65px;
   left: 0;
   width: 100%;
   height: 100vh;
   z-index: 20;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: ${({backgroundColor}) => backgroundColor};
 `;
 
 const ModalContainer = styled.div`
   position: fixed;
-  width: 28%;
+  width: ${({width}) => width};
   max-height: 80vh;
   overflow-y: auto;
-  top: 3.5rem;
-  left: 63%;
+
+
+  top: ${({top}) => top};
+  left: ${({left}) => left};
+
   background-color: white;
-  padding: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  padding: ${({padding}) => padding};
+  box-shadow: ${({boxShadow}) => boxShadow};
   z-index: 30;
   animation: ${slide_Down} 300ms ease-out forwards;
   &::-webkit-scrollbar {

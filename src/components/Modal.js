@@ -1,23 +1,22 @@
 import { Fragment, Component } from 'react';
 import ReactDOM from 'react-dom';
-import { connect } from 'react-redux';
-import { hideCartOverlay } from '../store/cart-slice';
+
 import {
   BackdropContainer,
   ModalContainer,
   ModalContent,
-} from './styles/Modal.style';
+} from './styles/Modal.style'
 
 class Backdrop extends Component {
   render() {
-    return <BackdropContainer onClick={this.props.onClick} />;
+    return <BackdropContainer backgroundColor = {this.props.backgroundColor} onClick={this.props.onClick} />;
   }
 }
 
 class ModalOverlay extends Component {
   render() {
     return (
-      <ModalContainer>
+      <ModalContainer boxShadow = {this.props.boxShadow} padding={this.props.padding} width={this.props.width} top={this.props.top} left={this.props.left}>
         <ModalContent>{this.props.children} </ModalContent>
       </ModalContainer>
     );
@@ -27,18 +26,16 @@ class ModalOverlay extends Component {
 const portalElement = document.getElementById('overlays');
 
 class Modal extends Component {
-  hideOverlayHandler() {
-    this.props.hideOverlay();
-  }
+ 
   render() {
     return (
       <Fragment>
         {ReactDOM.createPortal(
-          <Backdrop onClick={this.hideOverlayHandler.bind(this)} />,
+          <Backdrop onClick={this.props.onClick} backgroundColor = {this.props.backgroundColor} />,
           portalElement
         )}
         {ReactDOM.createPortal(
-          <ModalOverlay>{this.props.children}</ModalOverlay>,
+          <ModalOverlay boxShadow = {this.props.boxShadow} padding={this.props.padding} width={this.props.width} left={this.props.left} top={this.props.top}>{this.props.children}</ModalOverlay>,
           portalElement
         )}
       </Fragment>
@@ -46,9 +43,4 @@ class Modal extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    hideOverlay: () => dispatch(hideCartOverlay()),
-  };
-};
-export default connect(null, mapDispatchToProps)(Modal);
+export default Modal;

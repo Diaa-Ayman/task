@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 // import testImage from '../../../assets/testImage.png';
 import Details from './Details';
-import { gql } from '@apollo/client';
 import fetchData from '../../../api/fetchFun';
 import {
   DetailsContainer,
@@ -10,47 +9,17 @@ import {
   Availables,
   Image,
 } from '../../styles/productDetails.style';
+import { getProduct } from '../../../api/queries';
 
 // A Dynamic Page...
 
-const GET_PRODUCT = gql`
-  query {
-    category {
-      name
-      products {
-        id
-        name
-        brand
-        gallery
-        description
-        inStock
-        attributes {
-          name
-          id
-          items {
-            displayValue
-            value
-            id
-          }
-        }
-        prices {
-          currency {
-            symbol
-            label
-          }
-          amount
-        }
-      }
-    }
-  }
-`;
 
 class ProductDetails extends Component {
   constructor() {
     super();
 
     this.state = {
-      products: [],
+      product: {},
       loading: false,
       imageShowen: null,
     };
@@ -62,9 +31,19 @@ class ProductDetails extends Component {
 
   async componentDidMount() {
     try {
-      const data = await fetchData(GET_PRODUCT);
+      const data = await fetchData(getProduct(this.props.id));
+
+      const updatedProductAttributes = data.data.product.attributes.map(attribute => {
+        const updatedItems  = attribute.items.map(item => {
+        return {...item, selected: false}
+        })
+        return {...attribute, items: updatedItems }
+      })
+      const updatedProduct = {...data.data.product, attributes: updatedProductAttributes}
+      // console.log(updatedProduct)
+
       this.setState({
-        products: data.data.category,
+        product: updatedProduct,
         loading: data.loading,
       });
     } catch (error) {
@@ -72,16 +51,11 @@ class ProductDetails extends Component {
     }
   }
   render() {
-    // const productGallery = [testImage, testImage, testImage];
-    // console.log(this.state.products?.products);
-    const product = this.state.products.products?.find(
-      (product) => product.id === this.props.id
-    );
-    return (
+       return (
       <DetailsContainer>
         <ProductGallery>
           <Availables>
-            {product?.gallery.map((image, index) => (
+            {this.state.product.gallery?.map((image, index) => (
               <GalleryImage
                 src={image}
                 key={index}
@@ -91,13 +65,13 @@ class ProductDetails extends Component {
           </Availables>
           <Image
             src={
-              !this.state.imageShowen
-                ? product?.gallery[0]
+              !this.state.imageShowen && this.state.product.gallery
+                ? this.state.product?.gallery[0]
                 : this.state.imageShowen
             }
           />
         </ProductGallery>
-        <Details product={product} />
+        <Details product={this.state.product && this.state.product} />
       </DetailsContainer>
     );
   }

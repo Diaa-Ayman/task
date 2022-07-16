@@ -1,18 +1,18 @@
 import { Component } from 'react';
-// import { Query } from '@apollo/client/react/components';
 import Layout from './components/layout/Layout';
-// import styled from 'styled-components';
 import CategoryPage from './pages/CategoryPage';
 import ProductDetailsPage from './pages/ProductDetailsPage';
 import CartPage from './pages/CartPage';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import store from './store/store';
 import { Provider } from 'react-redux';
+import { GlobalStyle } from './components/styles/Global';
 
 export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
+        <GlobalStyle />
         <Layout>
           <Switch>
             <Route path='/' exact>
@@ -34,6 +34,3 @@ export default class App extends Component {
   }
 }
 
-// const Container = styled.div`
-//   margin-top: 4rem;
-// `;

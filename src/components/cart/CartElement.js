@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { StyledSpan } from '../styles/Global';
 import AttributeElement from '../AttributeElement';
 import { connect } from 'react-redux';
+import leftArrow from '../../assets/left.png'
+import rightArrow from '../../assets/right.png'
+
 import {
   addToCart,
   removeFromCart,
@@ -18,9 +21,18 @@ import {
   PriceContainer,
   Amount,
   Actions,
+  Title,
+  ImageContainer,
+  ArrowsContainer,
+  Arrow,
 } from '../styles/cart.style';
 
 class CartElement extends Component {
+
+
+  state = {
+    imageIndexCount: 0,
+  }
   // increase item amount by 1
   increaseHandler() {
     this.props.increase();
@@ -31,51 +43,65 @@ class CartElement extends Component {
     this.props.decrease();
   }
 
-  componentDidMount() {
-    const PRICE = this.props?.product.prices.find(
-      (price) => price.currency.symbol === this.props.curCurrency
-    );
 
-    this.props.getPrices && this.props.getPrices(PRICE);
+  //  show all available images of product...
+  nextImageHandler(gallery) {
+    if(this.state.imageIndexCount < gallery.length - 1){
+      this.setState({
+        imageIndexCount: this.state.imageIndexCount+ 1,
+      })
+    }
   }
+  prevImageHandler(){
+    if(this.state.imageIndexCount > 0){
+      this.setState({
+        imageIndexCount: this.state.imageIndexCount- 1,
+      })
+    }
+  }
+
   render() {
-    // console.log(this.props.product);
-    const { name, id, gallery, prices, amount, attributes } =
-      this.props?.product;
+    const { name, gallery, brand, prices, amount, attributes } =
+      this.props?.product
     const PRICE = prices.find(
       (price) => price.currency.symbol === this.props.curCurrency
-    );
+    )
 
-    const TotalPrice = (PRICE.amount * amount).toFixed(2);
 
     return (
       <div>
         <Element>
           <ElementData>
             {/* Title Of Cart Product  */}
+            <Title>
             <StyledSpan
               fontFamily='raleway'
-              fontWeight='600'
-              fontSize='1.6rem'
+              fontWeight={this.props.overlay ? '500' : '900'}
+              fontSize={this.props.overlay ? '1.1rem' : '1.6rem'}
               margin='0 0 7px 0'
             >
-              {name}
+              {brand}
             </StyledSpan>
-
+            <StyledSpan
+              fontFamily='raleway'
+              fontWeight={this.props.overlay ? '500' : '900'}
+              fontSize={this.props.overlay ? '1.1rem' : '1.4rem'}
+              margin='0 0 7px 0'
+            >
+             {name}
+            </StyledSpan>
+          </Title>
             {/* Price Container... */}
             <PriceContainer>
-              <StyledSpan fontWeight='900' fontSize='14px' margin='0 0 5px 0'>
-                PRICE:
-              </StyledSpan>
-              <StyledSpan fontWeight='700' fontSize='20px' fontFamily='Arial'>
-                {TotalPrice} {PRICE.currency.symbol}
+              <StyledSpan fontWeight='700' fontSize='20px' fontFamily='raleway'>
+                {PRICE.amount} {PRICE.currency.symbol}
                 {/* PRICE */}
               </StyledSpan>
             </PriceContainer>
 
             {attributes.map((attribute) => (
               <AttributeContainer key={attribute.id}>
-                <AttributeElement attribute={attribute} id={attribute.id} />
+                <AttributeElement overlay = {this.props.overlay} attribute={attribute} id={attribute.id} />
               </AttributeContainer>
             ))}
           </ElementData>
@@ -85,16 +111,22 @@ class CartElement extends Component {
           <ElementGallery>
             {/* Buttons to increase and decrease amount of cart element */}
             <Actions>
-              <ActionButton onClick={this.increaseHandler.bind(this)}>
+              <ActionButton overlay = {this.props.overlay} onClick={this.increaseHandler.bind(this)}>
                 +
               </ActionButton>
               <Amount>{amount}</Amount>
-              <ActionButton onClick={this.decreaseHandler.bind(this)}>
+              <ActionButton overlay={this.props.overlay} onClick={this.decreaseHandler.bind(this)}>
                 -
               </ActionButton>
             </Actions>
 
-            <Image alt='product gallery' src={gallery[0]} />
+            <ImageContainer>
+            <Image alt='product gallery' src={gallery[this.state.imageIndexCount]} />
+            {!this.props.overlay && <ArrowsContainer>
+              <Arrow src={leftArrow} onClick={this.prevImageHandler.bind(this)}/>
+              <Arrow src={rightArrow} onClick={this.nextImageHandler.bind(this, gallery)}/>
+            </ArrowsContainer>}
+            </ImageContainer>
           </ElementGallery>
         </Element>
       </div>
@@ -111,8 +143,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     increase: () => dispatch(addToCart({ ...ownProps.product, amount: 1 })),
-    decrease: () => dispatch(removeFromCart(ownProps.product.id)),
-    // getPrice: () => dispatch(getCartItemCurrentPrice()),
+    decrease: () => dispatch(removeFromCart(ownProps.product.uid)),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(CartElement);

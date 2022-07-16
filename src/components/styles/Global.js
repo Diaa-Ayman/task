@@ -1,8 +1,13 @@
 import styled from 'styled-components';
+import { createGlobalStyle } from 'styled-components'
 
-// Fun for using Attribute styling...
+export const GlobalStyle = createGlobalStyle`
+  body {
+    margin:0;
+    padding:0;
+  }
+`
 
-//////
 
 // STYLING FUNCTIONS....
 
@@ -20,7 +25,28 @@ const height = (props) => props.height;
 const color = (props) => props.color;
 
 // Styled Button...
-
+const selection = ({selected, color, colorAttr}) => {
+  if(selected){
+    return colorAttr ? `
+      background-color: ${color};
+      outline: 1px solid #5ECE7B;
+      border: 1px solid #fff;
+    ` : 
+    `
+    background-color: #0f0f0f;
+    color: #fff;
+    `
+  }
+  else {
+    return colorAttr ? `
+      background-color: ${color};
+    ` : 
+    `
+    background-color: #fff;
+    color: #0f0f0f;
+    ` 
+  }
+}
 export const Button = styled.button`
   outline: none;
   border: none;
@@ -47,9 +73,11 @@ export const Button = styled.button`
 export const Attribute = styled.div`
   border: 0.8px solid #ccc;
   margin-right: 3px;
-  padding: 3px;
+  padding: 5px;
   background-color: ${backgroundColor};
-  font-size: 18px;
+  ${({overlay}) => overlay ? `
+      font-size: .8rem;
+  `: `font-size: 1rem`}
   font-family: 'Raleway', sans-serif;
   font-weight: 900;
   width: ${width};
@@ -62,6 +90,8 @@ export const Attribute = styled.div`
     color: ${hoveredColor};
     transition: 0.5s;
   }
+
+${selection}
 `;
 
 // Global Styled Span...
