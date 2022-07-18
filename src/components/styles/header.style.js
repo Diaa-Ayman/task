@@ -35,7 +35,6 @@ const Logo = styled.img`
 const NavItem = styled.span`
   margin-right: 30px;
   padding-bottom: 15px;
-  text-decoration: none !important;
   color: #000 !important;
   cursor: pointer;
   &:hover {
@@ -47,6 +46,12 @@ const NavItem = styled.span`
   .nav-link{
     text-decoration: none;
     color: inherit;
+  }
+  .active{
+    color: #5ece7b;
+    border-bottom: 2px solid #5ece7b;
+    padding-bottom: 15px;
+    font-weight: 700;
   }
 `;
 

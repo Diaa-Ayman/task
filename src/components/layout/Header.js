@@ -5,9 +5,7 @@ import topArrow from '../../assets/top.png'
 import bottomArrow from '../../assets/bottom.png'
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { gql } from '@apollo/client';
 import { showCartOverlay, showCurrenciesOverlay } from '../../store/overlays-slice';
- 
 import {
   HeaderContainer,
   Nav,
@@ -20,18 +18,12 @@ import {
   CurrentCurrency
 } from '../styles/header.style';
 import fetchData from '../../api/fetchFun';
-
+import {GET_CATEGORIES_NAME}  from '../../api/queries'
 // const linkStyle = {
 //   textDecoration: 'none',
 //   color: 'inherit',
 // };
-const GET_CATEGORIES_NAME = gql`
-  query {
-    categories {
-      name
-    }
-  }
-`;
+
 class Header extends Component {
   constructor() {
     super();
@@ -61,7 +53,7 @@ class Header extends Component {
         <Nav>
           {this.state.categories.map((category) => (
             <NavItem key={category.name}>
-              <NavLink className='nav-link'  to={`/${category.name}`}>
+              <NavLink activeClassName='active' className='nav-link'  to={`/${category.name}`}>
                 {category.name.toUpperCase()}
               </NavLink>
             </NavItem>

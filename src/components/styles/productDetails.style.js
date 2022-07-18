@@ -80,7 +80,6 @@ export const DetailsColumn = styled.div`
   flex: 1;
   animation: ${slide_Left} 800ms ease-out forwards;
 
- 
 `;
 
 export const AttributesContainer = styled.div`

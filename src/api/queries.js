@@ -2,6 +2,15 @@
 import { gql } from '@apollo/client';
 
 
+
+export const GET_CATEGORIES_NAME = gql`
+  query {
+    categories {
+      name
+    }
+  }
+`;
+
 // Queries for CategoryPage Data...
 export  const getCategoryProducts = (categoryTitle) => {
 const PRODUCTS = gql`
@@ -81,3 +90,4 @@ export const getProduct =  (id) => {
 
   return GET_PRODUCT
 }
+
