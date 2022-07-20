@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
-import Product from './Product';
-import fetchData from '../../api/fetchFun';
-import { withRouter } from 'react-router';
-import { ProductsContainer } from '../styles/category.style';
-import { connect } from 'react-redux';
-import { getCategoryProducts } from '../../api/queries'
-
+import React, { Component } from "react";
+import Product from "./Product";
+import fetchData from "../../api/fetchFun";
+import { withRouter } from "react-router";
+import { ProductsContainer } from "../styles/category.style";
+import { connect } from "react-redux";
+import { getCategoryProducts } from "../../api/queries";
 
 class Products extends Component {
   constructor() {
@@ -13,49 +12,52 @@ class Products extends Component {
     this.state = {
       products: [],
       loading: false,
-      firstRender:true,
+      firstRender: true,
     };
   }
 
-
   async componentDidMount() {
-    if(this.state.firstRender){
+    if (this.state.firstRender) {
       try {
-        const PRODUCTS = getCategoryProducts(this.props.match.params.categoryName)
+        const PRODUCTS = getCategoryProducts(
+          this.props.match.params.categoryName
+        );
         const data = await fetchData(PRODUCTS);
         this.setState({
           products: data.data.category,
           loading: data.loading,
         });
       } catch (error) {
-        console.log('ERORR!!');
+        console.log("ERORR!!");
       }
-    this.setState({firstRender: false})
+      this.setState({ firstRender: false });
     }
-
   }
- async componentDidUpdate(prevProps) {
-
-    if(this.props.match.params.categoryName !== prevProps.match.params.categoryName){
+  async componentDidUpdate(prevProps) {
+    if (
+      this.props.match.params.categoryName !==
+      prevProps.match.params.categoryName
+    ) {
       try {
-        const PRODUCTS = getCategoryProducts(this.props.match.params.categoryName)
-        const data = await fetchData(PRODUCTS);        
+        const PRODUCTS = getCategoryProducts(
+          this.props.match.params.categoryName
+        );
+        const data = await fetchData(PRODUCTS);
         this.setState({
           products: data.data.category,
           loading: data.loading,
         });
       } catch (error) {
-        console.log('ERORR!!');
+        console.log("ERORR!!");
       }
     }
   }
 
   render() {
-    
     // const products = this.state.products.find(
     //   (product) => product.name === this.props.match.params.categoryName
     // );
-  
+
     // console.log(this.props.match.params.categoryName)
     // console.log(this.state.products.products)
     // const products = []
@@ -72,12 +74,12 @@ class Products extends Component {
               name={product.name}
               brand={product.brand}
               price={price}
-              prices = {product.prices}
+              prices={product.prices}
               inStock={product.inStock}
               id={product.id}
               key={product.id}
-              attributes = {product.attributes}
-              gallery = {product.gallery}
+              attributes={product.attributes}
+              gallery={product.gallery}
             />
           );
         })}

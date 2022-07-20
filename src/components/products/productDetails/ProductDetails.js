@@ -1,18 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 // import testImage from '../../../assets/testImage.png';
-import Details from './Details';
-import fetchData from '../../../api/fetchFun';
+import Details from "./Details";
+import fetchData from "../../../api/fetchFun";
 import {
   DetailsContainer,
   ProductGallery,
   GalleryImage,
   Availables,
   Image,
-} from '../../styles/productDetails.style';
-import { getProduct } from '../../../api/queries';
+} from "../../styles/productDetails.style";
+import { getProduct } from "../../../api/queries";
 
 // A Dynamic Page...
-
 
 class ProductDetails extends Component {
   constructor() {
@@ -33,13 +32,18 @@ class ProductDetails extends Component {
     try {
       const data = await fetchData(getProduct(this.props.id));
 
-      const updatedProductAttributes = data.data.product.attributes.map(attribute => {
-        const updatedItems  = attribute.items.map(item => {
-        return {...item, selected: false}
-        })
-        return {...attribute, items: updatedItems }
-      })
-      const updatedProduct = {...data.data.product, attributes: updatedProductAttributes}
+      const updatedProductAttributes = data.data.product.attributes.map(
+        (attribute) => {
+          const updatedItems = attribute.items.map((item) => {
+            return { ...item, selected: false };
+          });
+          return { ...attribute, items: updatedItems };
+        }
+      );
+      const updatedProduct = {
+        ...data.data.product,
+        attributes: updatedProductAttributes,
+      };
       // console.log(updatedProduct)
 
       this.setState({
@@ -47,11 +51,11 @@ class ProductDetails extends Component {
         loading: data.loading,
       });
     } catch (error) {
-      console.log('ERORR!!');
+      console.log("ERORR!!");
     }
   }
   render() {
-       return (
+    return (
       <DetailsContainer>
         <ProductGallery>
           <Availables>

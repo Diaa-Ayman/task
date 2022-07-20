@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import { StyledSpan } from '../styles/Global';
-import AttributeElement from '../AttributeElement';
-import { connect } from 'react-redux';
-import leftArrow from '../../assets/left.png'
-import rightArrow from '../../assets/right.png'
+import React, { Component } from "react";
+import { StyledSpan } from "../styles/Global";
+import AttributeElement from "../AttributeElement";
+import { connect } from "react-redux";
+import leftArrow from "../../assets/left.png";
+import rightArrow from "../../assets/right.png";
 
 import {
   addToCart,
   removeFromCart,
   // getCartItemCurrentPrice,
-} from '../../store/cart-slice';
+} from "../../store/cart-slice";
 
 import {
   Image,
@@ -25,14 +25,12 @@ import {
   ImageContainer,
   ArrowsContainer,
   Arrow,
-} from '../styles/cart.style';
+} from "../styles/cart.style";
 
 class CartElement extends Component {
-
-
   state = {
     imageIndexCount: 0,
-  }
+  };
   // increase item amount by 1
   increaseHandler() {
     this.props.increase();
@@ -43,30 +41,28 @@ class CartElement extends Component {
     this.props.decrease();
   }
 
-
   //  show all available images of product...
   nextImageHandler(gallery) {
-    if(this.state.imageIndexCount < gallery.length - 1){
+    if (this.state.imageIndexCount < gallery.length - 1) {
       this.setState({
-        imageIndexCount: this.state.imageIndexCount+ 1,
-      })
+        imageIndexCount: this.state.imageIndexCount + 1,
+      });
     }
   }
-  prevImageHandler(){
-    if(this.state.imageIndexCount > 0){
+  prevImageHandler() {
+    if (this.state.imageIndexCount > 0) {
       this.setState({
-        imageIndexCount: this.state.imageIndexCount- 1,
-      })
+        imageIndexCount: this.state.imageIndexCount - 1,
+      });
     }
   }
 
   render() {
     const { name, gallery, brand, prices, amount, attributes } =
-      this.props?.product
+      this.props?.product;
     const PRICE = prices.find(
       (price) => price.currency.symbol === this.props.curCurrency
-    )
-
+    );
 
     return (
       <div>
@@ -74,26 +70,26 @@ class CartElement extends Component {
           <ElementData>
             {/* Title Of Cart Product  */}
             <Title>
-            <StyledSpan
-              fontFamily='raleway'
-              fontWeight={this.props.overlay ? '500' : '900'}
-              fontSize={this.props.overlay ? '1.1rem' : '1.6rem'}
-              margin='0 0 7px 0'
-            >
-              {brand}
-            </StyledSpan>
-            <StyledSpan
-              fontFamily='raleway'
-              fontWeight={this.props.overlay ? '500' : '900'}
-              fontSize={this.props.overlay ? '1.1rem' : '1.4rem'}
-              margin='0 0 7px 0'
-            >
-             {name}
-            </StyledSpan>
-          </Title>
+              <StyledSpan
+                fontFamily="raleway"
+                fontWeight={this.props.overlay ? "500" : "900"}
+                fontSize={this.props.overlay ? "1.1rem" : "1.6rem"}
+                margin="0 0 7px 0"
+              >
+                {brand}
+              </StyledSpan>
+              <StyledSpan
+                fontFamily="raleway"
+                fontWeight={this.props.overlay ? "500" : "900"}
+                fontSize={this.props.overlay ? "1.1rem" : "1.4rem"}
+                margin="0 0 7px 0"
+              >
+                {name}
+              </StyledSpan>
+            </Title>
             {/* Price Container... */}
             <PriceContainer>
-              <StyledSpan fontWeight='700' fontSize='20px' fontFamily='raleway'>
+              <StyledSpan fontWeight="700" fontSize="20px" fontFamily="raleway">
                 {PRICE.amount} {PRICE.currency.symbol}
                 {/* PRICE */}
               </StyledSpan>
@@ -101,7 +97,11 @@ class CartElement extends Component {
 
             {attributes.map((attribute) => (
               <AttributeContainer key={attribute.id}>
-                <AttributeElement overlay = {this.props.overlay} attribute={attribute} id={attribute.id} />
+                <AttributeElement
+                  overlay={this.props.overlay}
+                  attribute={attribute}
+                  id={attribute.id}
+                />
               </AttributeContainer>
             ))}
           </ElementData>
@@ -111,21 +111,38 @@ class CartElement extends Component {
           <ElementGallery>
             {/* Buttons to increase and decrease amount of cart element */}
             <Actions>
-              <ActionButton overlay = {this.props.overlay} onClick={this.increaseHandler.bind(this)}>
+              <ActionButton
+                overlay={this.props.overlay}
+                onClick={this.increaseHandler.bind(this)}
+              >
                 +
               </ActionButton>
               <Amount>{amount}</Amount>
-              <ActionButton overlay={this.props.overlay} onClick={this.decreaseHandler.bind(this)}>
+              <ActionButton
+                overlay={this.props.overlay}
+                onClick={this.decreaseHandler.bind(this)}
+              >
                 -
               </ActionButton>
             </Actions>
 
             <ImageContainer>
-            <Image alt='product gallery' src={gallery[this.state.imageIndexCount]} />
-            {!this.props.overlay && <ArrowsContainer>
-              <Arrow src={leftArrow} onClick={this.prevImageHandler.bind(this)}/>
-              <Arrow src={rightArrow} onClick={this.nextImageHandler.bind(this, gallery)}/>
-            </ArrowsContainer>}
+              <Image
+                alt="product gallery"
+                src={gallery[this.state.imageIndexCount]}
+              />
+              {!this.props.overlay && (
+                <ArrowsContainer>
+                  <Arrow
+                    src={leftArrow}
+                    onClick={this.prevImageHandler.bind(this)}
+                  />
+                  <Arrow
+                    src={rightArrow}
+                    onClick={this.nextImageHandler.bind(this, gallery)}
+                  />
+                </ArrowsContainer>
+              )}
             </ImageContainer>
           </ElementGallery>
         </Element>

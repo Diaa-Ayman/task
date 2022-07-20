@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import { StyledSpan, Button } from '../../styles/Global';
-import AttributeElement from '../../AttributeElement';
-import { connect } from 'react-redux';
-import { addToCart } from '../../../store/cart-slice';
-import { withRouter } from 'react-router';
+import React, { Component } from "react";
+import { StyledSpan, Button } from "../../styles/Global";
+import AttributeElement from "../../AttributeElement";
+import { connect } from "react-redux";
+import { addToCart } from "../../../store/cart-slice";
+import { withRouter } from "react-router";
 import {
   DetailsColumn,
   AttributesContainer,
   LineDiv,
   Description,
   PriceContainer,
-} from '../../styles/productDetails.style';
+} from "../../styles/productDetails.style";
 
 export class Details extends Component {
   constructor(props) {
@@ -21,21 +21,20 @@ export class Details extends Component {
     };
   }
 
-
   // Add Item To the Cart and sending attributes as parameter
   addToCartHandler() {
     this.props.addToCart();
-    this.props.history.push('/my-cart');
+    this.props.history.push("/my-cart");
   }
 
   // get cart specific attributes...
   getCartItemAttributes(attributeItem) {
-    this.setState({attr: this.state.counter + 1})
+    this.setState({ attr: this.state.counter + 1 });
   }
 
-
   render() {
-    const { inStock, name, brand, attributes, prices, description } = this.props?.product || {};
+    const { inStock, name, brand, attributes, prices, description } =
+      this.props?.product || {};
 
     const PRICE = prices?.find(
       (price) => price.currency.symbol === this.props.curCurrency
@@ -45,11 +44,11 @@ export class Details extends Component {
     return (
       // This is a right column for Details Page....
       <DetailsColumn>
-        <StyledSpan fontWeight='900' fontSize='1.6rem' margin='0 0 10px 0'>
+        <StyledSpan fontWeight="900" fontSize="1.6rem" margin="0 0 10px 0">
           {brand}
           {/* Title of Product */}
         </StyledSpan>
-        <StyledSpan fontWeight='500'  fontSize='1.6rem' margin='0 0 10px 0'>
+        <StyledSpan fontWeight="500" fontSize="1.6rem" margin="0 0 10px 0">
           {name}
           {/* Title of Product */}
         </StyledSpan>
@@ -59,8 +58,8 @@ export class Details extends Component {
           <AttributesContainer key={attribute.id}>
             <AttributeElement
               highlight
-              hoverBg = '#0f0f0f'
-              hoverColor = '#fff'
+              hoverBg="#0f0f0f"
+              hoverColor="#fff"
               getAttributes={this.getCartItemAttributes.bind(this)}
               attribute={attribute}
               id={attribute.id}
@@ -70,25 +69,31 @@ export class Details extends Component {
 
         {/* PRICE */}
         <PriceContainer>
-          <StyledSpan fontWeight='900' fontSize='1rem' margin='8px 0'>
+          <StyledSpan fontWeight="900" fontSize="1rem" margin="8px 0">
             PRICE:
           </StyledSpan>
-          <StyledSpan fontFamily='arial' fontWeight='700' fontSize='1.2rem'>
+          <StyledSpan fontFamily="arial" fontWeight="700" fontSize="1.2rem">
             {PRICE?.amount} {PRICE?.currency.symbol}
           </StyledSpan>
         </PriceContainer>
         <Button
           onClick={inStock ? this.addToCartHandler.bind(this) : undefined}
-          padding='14px 0'
-          margin='2rem 0'
-          color='#fff'
-          width='75%'
-          backgroundColor='#5ECE7B'
+          padding="14px 0"
+          margin="2rem 0"
+          color="#fff"
+          width="75%"
+          backgroundColor="#5ECE7B"
         >
           ADD TO CART
         </Button>
-        {!this.state.completedOrder && <StyledSpan color='red' margin='1rem 0'>Please Select All Attirubtes!</StyledSpan>}
-        <Description dangerouslySetInnerHTML={{__html: description}}></Description>
+        {!this.state.completedOrder && (
+          <StyledSpan color="red" margin="1rem 0">
+            Please Select All Attirubtes!
+          </StyledSpan>
+        )}
+        <Description
+          dangerouslySetInnerHTML={{ __html: description }}
+        ></Description>
       </DetailsColumn>
     );
   }
@@ -103,21 +108,20 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     addToCart: () => {
       const product = ownProps?.product;
-      let UID = ''
+      let UID = "";
 
-      product.attributes.forEach(attribute => {
-
-          let selectedItemOfEach = attribute.items.find(item => item.selected)
-          if(!selectedItemOfEach){
-            attribute.items[0].selected = true;
-            selectedItemOfEach = attribute.items.find(item => item.selected)
-          }
-            UID += selectedItemOfEach.id.toString()
-        })
-        UID = UID +'_'+product.name.replace(/ +/g, "")
+      product.attributes.forEach((attribute) => {
+        let selectedItemOfEach = attribute.items.find((item) => item.selected);
+        if (!selectedItemOfEach) {
+          attribute.items[0].selected = true;
+          selectedItemOfEach = attribute.items.find((item) => item.selected);
+        }
+        UID += selectedItemOfEach.id.toString();
+      });
+      UID = UID + "_" + product.name.replace(/ +/g, "");
       dispatch(
         addToCart({
-          uid: UID ,
+          uid: UID,
           name: product.name,
           id: product.id,
           prices: product.prices,
