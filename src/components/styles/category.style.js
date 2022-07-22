@@ -17,11 +17,11 @@ const ProductsContainer = styled.div`
   margin: 6rem 0;
 
   @media (max-width: 1000px) {
-    grid-template-columns: auto auto;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   @media (max-width: 750px) {
-    grid-template-columns: auto;
+    grid-template-columns: 1fr;
   }
 `;
 
