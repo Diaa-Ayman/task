@@ -41,7 +41,7 @@ const OutputLayout = styled.div`
     currenciesOverlayVisible &&
     `
     overflow-y: hidden;
-    height: 100vh;
+    height:100vh;
   `}
 `;
 

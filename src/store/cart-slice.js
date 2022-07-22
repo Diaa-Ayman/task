@@ -1,20 +1,22 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialCartState = {
   items: [],
   totalQuantity: 0,
-  priceCurrency: '$',
+  priceCurrency: "$",
   totalAmount: 0,
 };
 const CartSlice = createSlice({
-  name: 'cart',
+  name: "cart",
   initialState: initialCartState,
   reducers: {
     // Add Item To Cart if it's already in the cart or not
     addToCart(state, action) {
       const newItem = action.payload;
       state.totalQuantity = state.totalQuantity + 1;
-      const exisitingItem = state.items.find((item) => item.uid === newItem.uid);
+      const exisitingItem = state.items.find(
+        (item) => item.uid === newItem.uid
+      );
       if (!exisitingItem) {
         state.items.push({
           id: newItem.id,
@@ -26,17 +28,18 @@ const CartSlice = createSlice({
           gallery: newItem.gallery,
           brand: newItem.brand,
         });
-      }
-     
-      else{ 
+      } else {
         exisitingItem.amount++;
       }
 
       state.totalAmount = 0;
-      state.items.forEach(item => {
-        const currentPrice = item.prices.find(price => price.currency.symbol === state.priceCurrency)
-        state.totalAmount = state.totalAmount + currentPrice.amount * item.amount
-      })
+      state.items.forEach((item) => {
+        const currentPrice = item.prices.find(
+          (price) => price.currency.symbol === state.priceCurrency
+        );
+        state.totalAmount =
+          state.totalAmount + currentPrice.amount * item.amount;
+      });
     },
 
     //  remove From Cart
@@ -49,8 +52,10 @@ const CartSlice = createSlice({
       } else {
         exisitingItem.amount--;
       }
-        const currentPrice = exisitingItem.prices.find(price => price.currency.symbol === state.priceCurrency)
-        state.totalAmount = state.totalAmount - currentPrice.amount 
+      const currentPrice = exisitingItem.prices.find(
+        (price) => price.currency.symbol === state.priceCurrency
+      );
+      state.totalAmount = state.totalAmount - currentPrice.amount;
     },
 
     changeCurrency(state, action) {

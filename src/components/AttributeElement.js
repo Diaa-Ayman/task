@@ -8,8 +8,8 @@ export default class AttributeElement extends Component {
     let width = "";
     let height = "";
     if (this.props.overlay) {
-      width = colorAttr ? "8px" : "25px";
-      height = colorAttr ? "8px" : "20px";
+      width = colorAttr ? "8px" : "32px";
+      height = colorAttr ? "8px" : "25px";
     } else {
       width = colorAttr ? "12px" : "45px";
       height = colorAttr ? "12px" : "27px";

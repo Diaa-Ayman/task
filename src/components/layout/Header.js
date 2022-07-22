@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import {
   showCartOverlay,
   showCurrenciesOverlay,
+  hideCartOverlay,
 } from "../../store/overlays-slice";
 import {
   HeaderContainer,
@@ -40,6 +41,9 @@ class Header extends Component {
   showCurrenciesOverlay() {
     this.props.showCurrenciesOverlay();
   }
+  navItemClickHandler() {
+    this.props.hideCartOverlay();
+  }
   async componentDidMount() {
     try {
       const data = await fetchData(GET_CATEGORIES_NAME);
@@ -55,7 +59,10 @@ class Header extends Component {
       <HeaderContainer>
         <Nav>
           {this.state.categories.map((category) => (
-            <NavItem key={category.name}>
+            <NavItem
+              onClick={this.navItemClickHandler.bind(this)}
+              key={category.name}
+            >
               <NavLink
                 activeClassName="active"
                 className="nav-link"
@@ -101,6 +108,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     showCartOverlay: () => dispatch(showCartOverlay()),
     showCurrenciesOverlay: () => dispatch(showCurrenciesOverlay()),
+    hideCartOverlay: () => dispatch(hideCartOverlay()),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

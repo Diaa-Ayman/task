@@ -1,13 +1,21 @@
-import styled from 'styled-components';
-import { createGlobalStyle } from 'styled-components'
+import styled from "styled-components";
+import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
   body {
     margin:0;
     padding:0;
   }
-`
 
+  /* html{
+    &::-webkit-scrollbar {
+    display: none;
+  }
+  } */
+  html{
+    overflow-y:scroll;
+  }
+`;
 
 // STYLING FUNCTIONS....
 
@@ -25,28 +33,29 @@ const height = (props) => props.height;
 const color = (props) => props.color;
 
 // Styled Button...
-const selection = ({selected, color, colorAttr}) => {
-  if(selected){
-    return colorAttr ? `
+const selection = ({ selected, color, colorAttr }) => {
+  if (selected) {
+    return colorAttr
+      ? `
       background-color: ${color};
       outline: 1px solid #5ECE7B;
       border: 1px solid #fff;
-    ` : 
     `
+      : `
     background-color: #0f0f0f;
     color: #fff;
-    `
-  }
-  else {
-    return colorAttr ? `
+    `;
+  } else {
+    return colorAttr
+      ? `
       background-color: ${color};
-    ` : 
     `
+      : `
     background-color: #fff;
     color: #0f0f0f;
-    ` 
+    `;
   }
-}
+};
 export const Button = styled.button`
   outline: none;
   border: none;
@@ -75,9 +84,11 @@ export const Attribute = styled.div`
   margin-right: 3px;
   padding: 5px;
   background-color: ${backgroundColor};
-  ${({overlay}) => overlay ? `
-      font-size: .8rem;
-  `: `font-size: 1rem`}
+  ${({ overlay }) =>
+    overlay
+      ? `
+      font-size: .8rem;`
+      : `font-size: 1rem`}
   font-family: 'Raleway', sans-serif;
   font-weight: 900;
   width: ${width};
@@ -91,7 +102,7 @@ export const Attribute = styled.div`
     transition: 0.5s;
   }
 
-${selection}
+  ${selection}
 `;
 
 // Global Styled Span...

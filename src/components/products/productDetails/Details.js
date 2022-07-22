@@ -4,6 +4,8 @@ import AttributeElement from "../../AttributeElement";
 import { connect } from "react-redux";
 import { addToCart } from "../../../store/cart-slice";
 import { withRouter } from "react-router";
+import parse from "html-react-parser";
+
 import {
   DetailsColumn,
   AttributesContainer,
@@ -24,12 +26,11 @@ export class Details extends Component {
   // Add Item To the Cart and sending attributes as parameter
   addToCartHandler() {
     this.props.addToCart();
-    this.props.history.push("/my-cart");
   }
 
   // get cart specific attributes...
   getCartItemAttributes(attributeItem) {
-    this.setState({ attr: this.state.counter + 1 });
+    this.setState({ couter: this.state.counter + 1 });
   }
 
   render() {
@@ -81,7 +82,7 @@ export class Details extends Component {
           padding="14px 0"
           margin="2rem 0"
           color="#fff"
-          width="75%"
+          width="290px"
           backgroundColor="#5ECE7B"
         >
           ADD TO CART
@@ -91,9 +92,9 @@ export class Details extends Component {
             Please Select All Attirubtes!
           </StyledSpan>
         )}
-        <Description
-          dangerouslySetInnerHTML={{ __html: description }}
-        ></Description>
+        <Description>
+          {parse(description ? description : "<span>loading...</span>")}
+        </Description>
       </DetailsColumn>
     );
   }

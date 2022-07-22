@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes } from "styled-components";
 
 const scale_ON = keyframes`
    from {
@@ -12,18 +12,16 @@ const scale_ON = keyframes`
 `;
 
 const ProductsContainer = styled.div`
- display:grid;
- grid-template-columns: auto auto auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   margin: 6rem 0;
 
   @media (max-width: 1000px) {
-    grid-template-columns: auto auto ;
-
+    grid-template-columns: auto auto;
   }
-  
-  @media (max-width: 750px) {
-    grid-template-columns: auto  ;
 
+  @media (max-width: 750px) {
+    grid-template-columns: auto;
   }
 `;
 
@@ -31,11 +29,11 @@ const ProductCard = styled.div`
   background-color: #fff;
   display: flex;
   flex-direction: column;
-  justify-content:flex-start ;
+  overflow: hidden;
+  justify-content: flex-start;
   padding: 10px;
   margin-right: 15px;
-  margin-top: 25px;
-  width:330px;
+  margin-bottom: 30px;
   position: relative;
   animation: ${scale_ON} 800ms ease-out;
   /* padding: 10px;
@@ -43,33 +41,34 @@ margin: 6px; */
   &:hover {
     cursor: pointer;
     box-shadow: 0px 0px 5px 5px #eee;
-    transition: .5s; 
-}
-${({ inStock }) => !inStock && `
+    transition: 0.5s;
+  }
+  ${({ inStock }) =>
+    !inStock &&
+    `
     opacity: 0.5;
   `}
 
-  .link{
+  .link {
     text-decoration: none;
     color: inherit;
   }
 `;
 
 const ProductImage = styled.img`
-  height: 300px;
-  width: 90%;
-  object-fit: cover;
-  object-position:top;
-  margin-bottom: 20px;
-  padding: 8px;
+  width: 100%;
+  height: 350px;
+  object-fit: contain;
 `;
 
 const Title = styled.span`
-  margin: 10px 0;
+  margin: 5px 0;
   font-size: 18px;
   font-weight: 500;
+  width: 70%;
+  line-height: 1.3;
   text-transform: capitalize;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
 `;
 const Price = styled.span`
   font-size: 18px;
@@ -77,29 +76,39 @@ const Price = styled.span`
 `;
 
 const CartLogo = styled.img`
-width:60px;
-height:60px;
-border-radius: 50%;
-position:absolute;
-bottom:80px;
-right: 40px;
-&:hover{
-  transform: scale(1.1) ;
-}
-`
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 65px;
+  right: 30px;
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
 const Stock = styled.span`
-  position:absolute ;
-  top:50%;
-  left:25%;
-  font-size:25px ;
-  font-weight:700;
-  color:#a3a3a3;
-`
+  position: absolute;
+  top: 50%;
+  left: 25%;
+  font-size: 25px;
+  font-weight: 700;
+  color: #a3a3a3;
+`;
 const ImageContainer = styled.div`
-position:relative;
-`
+  position: relative;
+`;
 const Container = styled.div`
-  display:flex;
+  display: flex;
   flex-direction: column;
-`
-export {Container, Price, Title, ProductImage, ProductCard, ProductsContainer, CartLogo, ImageContainer, Stock };
+`;
+export {
+  Container,
+  Price,
+  Title,
+  ProductImage,
+  ProductCard,
+  ProductsContainer,
+  CartLogo,
+  ImageContainer,
+  Stock,
+};

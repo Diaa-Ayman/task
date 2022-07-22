@@ -21,6 +21,7 @@ class ProductDetails extends Component {
       product: {},
       loading: false,
       imageShowen: null,
+      counter: 0,
     };
   }
 
@@ -55,6 +56,7 @@ class ProductDetails extends Component {
     }
   }
   render() {
+    console.log(this.state.counter);
     return (
       <DetailsContainer>
         <ProductGallery>

@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes } from "styled-components";
 
 const slide_Down = keyframes`
    from {
@@ -12,7 +12,7 @@ const slide_Down = keyframes`
 `;
 
 const HeaderContainer = styled.div`
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
   font-weight: 550;
   color: #1d1f22;
   display: flex;
@@ -43,11 +43,11 @@ const NavItem = styled.span`
     font-weight: 700;
   }
 
-  .nav-link{
+  .nav-link {
     text-decoration: none;
     color: inherit;
   }
-  .active{
+  .active {
     color: #5ece7b;
     border-bottom: 2px solid #5ece7b;
     padding-bottom: 15px;
@@ -90,14 +90,14 @@ const Badge = styled.span`
 
 const CurrentCurrency = styled.div`
   display: flex;
-  align-items:center ;
-  justify-content:space-between ;
-  font-size:17px;
-  font-weight:700;
-  width:35px;
-  margin-right:20px;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 17px;
+  font-weight: 700;
+  width: 35px;
+  margin-right: 20px;
   cursor: pointer;
-`
+`;
 export {
   HeaderContainer,
   Logo,
@@ -107,5 +107,5 @@ export {
   Actions,
   CartLogo,
   Badge,
-  CurrentCurrency
+  CurrentCurrency,
 };

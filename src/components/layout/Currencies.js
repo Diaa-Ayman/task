@@ -36,7 +36,7 @@ class AvailableCurrencies extends Component {
   render() {
     return (
       <Modal
-        padding="0rem"
+        padding="0"
         top="4rem"
         left="81%"
         boxShadow="1px 0px 5px 2px #eee"
